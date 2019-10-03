@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataPlus.Bar.Entities.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20190925230836_UpdateCubeModel")]
-    partial class UpdateCubeModel
+    [Migration("20191002235829_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,26 @@ namespace DataPlus.Bar.Entities.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DataPlus.Bar.Entities.Models.Account", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AccountType");
+
+                    b.Property<string>("Address");
+
+                    b.Property<DateTime>("DateOfBirth");
+
+                    b.Property<Guid>("OwnerId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Accounts");
+                });
 
             modelBuilder.Entity("DataPlus.Bar.Entities.Models.ArrayValue", b =>
                 {
@@ -71,6 +91,30 @@ namespace DataPlus.Bar.Entities.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Logs");
+                });
+
+            modelBuilder.Entity("DataPlus.Bar.Entities.Models.Owner", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<DateTime>("DateOfBirth");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Owners");
+                });
+
+            modelBuilder.Entity("DataPlus.Bar.Entities.Models.Account", b =>
+                {
+                    b.HasOne("DataPlus.Bar.Entities.Models.Owner", "Owner")
+                        .WithMany("Accounts")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DataPlus.Bar.Entities.Models.ArrayValue", b =>

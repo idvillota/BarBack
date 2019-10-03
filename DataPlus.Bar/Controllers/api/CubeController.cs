@@ -6,7 +6,7 @@ using System;
 
 namespace CubeSummation.Controllers.api
 {    
-    [Route("api/[controller]")]
+    [Route("api/cube")]
     [ApiController]
     public class CubeController : ControllerBase
     {
@@ -37,7 +37,7 @@ namespace CubeSummation.Controllers.api
         }
 
         // GET: api/Cube/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
             try

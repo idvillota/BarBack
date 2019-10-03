@@ -6,7 +6,9 @@ namespace DataPlus.Bar.Repository
     public class WrapperRepository : IWrapperRepository
     {
         private RepositoryContext _repoContext;
-        public ICubeRepository _cube; 
+        private ICubeRepository _cube;
+        private IOwnerRepository _owner;
+        private IAccountRepository _account;
 
         public ICubeRepository Cube
         {
@@ -14,6 +16,24 @@ namespace DataPlus.Bar.Repository
             {
                 _cube = _cube == null ? new CubeRepository(_repoContext) : _cube;
                 return _cube;
+            }
+        }
+
+        public IOwnerRepository Owner
+        {
+            get
+            {
+                _owner = _owner == null ? new OwnerRepository(_repoContext) : _owner;
+                return _owner;
+            }
+        }
+
+        public IAccountRepository Account
+        {
+            get
+            {
+                _account = _account == null ? new AccountRepository(_repoContext) : _account;
+                return _account;
             }
         }
 

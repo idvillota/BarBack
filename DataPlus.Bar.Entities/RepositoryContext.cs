@@ -7,6 +7,8 @@ namespace DataPlus.Bar.Entities
     {
         public DbSet<Cube> Cubes { get; set; }
         public DbSet<Log> Logs { get; set; }
+        public DbSet<Owner> Owners { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
         public RepositoryContext(DbContextOptions options)
             :base(options)
