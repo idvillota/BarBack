@@ -5,7 +5,8 @@ namespace DataPlus.Bar.Contracts.Repositories
     {
         ICubeRepository Cube { get; }
         IOwnerRepository Owner { get; }
-        IAccountRepository Account { get;  }
+        IAccountRepository Account { get; }
+        IProductRepository Product { get; }
         void Save();
     }
 }

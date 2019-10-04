@@ -9,6 +9,7 @@ namespace DataPlus.Bar.Repository
         private ICubeRepository _cube;
         private IOwnerRepository _owner;
         private IAccountRepository _account;
+        private IProductRepository _product;
 
         public ICubeRepository Cube
         {
@@ -25,6 +26,15 @@ namespace DataPlus.Bar.Repository
             {
                 _owner = _owner == null ? new OwnerRepository(_repoContext) : _owner;
                 return _owner;
+            }
+        }
+
+        public IProductRepository Product
+        {
+            get
+            {
+                _product = _product == null ? new ProductRepository(_repoContext) : _product;
+                return _product;
             }
         }
 

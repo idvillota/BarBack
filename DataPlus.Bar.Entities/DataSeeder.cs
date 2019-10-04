@@ -15,6 +15,7 @@ namespace DataPlus.Bar.Entities
 
         public void SeedData()
         {
+            CreateProducts();
             CreateCubes();
             CreateOwners();
             _context.SaveChanges();
@@ -44,6 +45,57 @@ namespace DataPlus.Bar.Entities
             var existingAccount = _context.Accounts.FirstOrDefault(a => a.AccountType == account.AccountType);
             if (existingAccount == null)
                 _context.Accounts.Add(account);
+        }
+
+        private void AddNewProduct(Product product)
+        {
+            var existingProduct = _context.Products.FirstOrDefault(p => p.Name == product.Name);
+            if (existingProduct == null)
+                _context.Products.Add(product);
+        }
+
+        public void CreateProducts()
+        {
+            AddNewProduct(new Product
+            {
+                Name = "Product 1",
+                Description = "Product 1 Description",
+                CostPrice = 1000,
+                SalePrice = 2000,
+                Quantity = 100
+            });
+            AddNewProduct(new Product
+            {
+                Name = "Product 5",
+                Description = "Product 5 Description",
+                CostPrice = 1200,
+                SalePrice = 2100,
+                Quantity = 150
+            });
+            AddNewProduct(new Product
+            {
+                Name = "Product 3",
+                Description = "Product 3 Description",
+                CostPrice = 800,
+                SalePrice = 1600,
+                Quantity = 80
+            });
+            AddNewProduct(new Product
+            {
+                Name = "Product 4",
+                Description = "Product 4 Description",
+                CostPrice = 2000,
+                SalePrice = 3000,
+                Quantity = 90
+            });
+            AddNewProduct(new Product
+            {
+                Name = "Product 2",
+                Description = "Product 2 Description",
+                CostPrice = 3000,
+                SalePrice = 4500,
+                Quantity = 160
+            });
         }
 
         public void CreateOwners()
