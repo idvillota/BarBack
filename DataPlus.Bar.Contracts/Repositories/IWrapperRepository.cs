@@ -7,6 +7,7 @@ namespace DataPlus.Bar.Contracts.Repositories
         IOwnerRepository Owner { get; }
         IAccountRepository Account { get; }
         IProductRepository Product { get; }
+        IIngredientRepository Ingredient { get; }
         void Save();
     }
 }

@@ -10,6 +10,7 @@ namespace DataPlus.Bar.Entities
         public DbSet<Owner> Owners { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
 
         public RepositoryContext(DbContextOptions options)
             :base(options)

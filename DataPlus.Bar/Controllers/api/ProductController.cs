@@ -37,7 +37,7 @@ namespace ProductSummation.Controllers.api
         }
 
         // GET: api/Product/5
-        [HttpGet("{id}/account")]
+        [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
             try

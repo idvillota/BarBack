@@ -1,4 +1,5 @@
 ﻿using DataPlus.Bar.Entities.Models;
+using DataPlus.Bar.Entities.Models.Enumerations;
 using System;
 using System.Linq;
 
@@ -18,9 +19,10 @@ namespace DataPlus.Bar.Entities
             CreateProducts();
             CreateCubes();
             CreateOwners();
+            CreateIngredients();
             _context.SaveChanges();
             //CreateAccounts();
-            _context.SaveChanges();
+            
         }
 
         //public void CreateAccounts()
@@ -52,6 +54,61 @@ namespace DataPlus.Bar.Entities
             var existingProduct = _context.Products.FirstOrDefault(p => p.Name == product.Name);
             if (existingProduct == null)
                 _context.Products.Add(product);
+        }
+
+        private void AddNewIngredient(Ingredient ingredient)
+        {
+            var existingIngredient = _context.Ingredients.FirstOrDefault(i => i.Name == ingredient.Name);
+            if (existingIngredient == null)
+                _context.Ingredients.Add(ingredient);
+        }
+
+        public void CreateIngredients()
+        {
+            AddNewIngredient(new Ingredient
+            {
+                Name = "Ingredient 1",
+                Quantity = 100,
+                Value = 150,
+                Category = EIngredientCategory.PRODUCTO_TERMINADO,
+                Presentation = EIngredientPresentation.UNIDAD
+            });
+
+            AddNewIngredient(new Ingredient
+            {
+                Name = "Ingredient 5",
+                Quantity = 500,
+                Value = 250,
+                Category = EIngredientCategory.PRODUCTO_TERMINADO,
+                Presentation = EIngredientPresentation.UNIDAD
+            });
+
+            AddNewIngredient(new Ingredient
+            {
+                Name = "Ingredient 3",
+                Quantity = 300,
+                Value = 200,
+                Category = EIngredientCategory.PRODUCTO_TERMINADO,
+                Presentation = EIngredientPresentation.UNIDAD
+            });
+
+            AddNewIngredient(new Ingredient
+            {
+                Name = "Ingredient 2",
+                Quantity = 200,
+                Value = 550,
+                Category = EIngredientCategory.PRODUCTO_TERMINADO,
+                Presentation = EIngredientPresentation.UNIDAD
+            });
+
+            AddNewIngredient(new Ingredient
+            {
+                Name = "Ingredient 4",
+                Quantity = 400,
+                Value = 750,
+                Category = EIngredientCategory.PRODUCTO_TERMINADO,
+                Presentation = EIngredientPresentation.UNIDAD
+            });
         }
 
         public void CreateProducts()

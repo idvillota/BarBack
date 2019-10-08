@@ -10,6 +10,7 @@ namespace DataPlus.Bar.Repository
         private IOwnerRepository _owner;
         private IAccountRepository _account;
         private IProductRepository _product;
+        private IIngredientRepository _ingredient;
 
         public ICubeRepository Cube
         {
@@ -44,6 +45,15 @@ namespace DataPlus.Bar.Repository
             {
                 _account = _account == null ? new AccountRepository(_repoContext) : _account;
                 return _account;
+            }
+        }
+
+        public IIngredientRepository Ingredient
+        {
+            get
+            {
+                _ingredient = _ingredient == null ? new IngredientRepository(_repoContext) : _ingredient;
+                return _ingredient;
             }
         }
 
