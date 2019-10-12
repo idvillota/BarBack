@@ -5,12 +5,14 @@ namespace DataPlus.Bar.Entities
 {
     public class RepositoryContext : DbContext
     {
-        public DbSet<Cube> Cubes { get; set; }
         public DbSet<Log> Logs { get; set; }
-        public DbSet<Owner> Owners { get; set; }
-        public DbSet<Account> Accounts { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Table> Tables { get; set; }
 
         public RepositoryContext(DbContextOptions options)
             :base(options)

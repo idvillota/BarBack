@@ -17,36 +17,12 @@ namespace DataPlus.Bar.Entities
         public void SeedData()
         {
             CreateProducts();
-            CreateCubes();
-            CreateOwners();
             CreateIngredients();
+            CreateClients();
+            CreateTables();
+            CreatePayments();
             _context.SaveChanges();
-            //CreateAccounts();
             
-        }
-
-        //public void CreateAccounts()
-        //{
-        //    var owner1 = _context.Owners.First(o => o.Name == "Owner 1");
-        //    AddnewAccount(new Account
-        //    {
-        //        AccountType = "AccountType1",
-        //        Owner = owner1,
-        //        OwnerId = owner1.Id
-        //    });
-        //    AddnewAccount(new Account
-        //    {
-        //        AccountType = "AccountType2",
-        //        Owner = owner1,
-        //        OwnerId = owner1.Id
-        //    });
-        //}
-
-        private void AddnewAccount(Account account)
-        {
-            var existingAccount = _context.Accounts.FirstOrDefault(a => a.AccountType == account.AccountType);
-            if (existingAccount == null)
-                _context.Accounts.Add(account);
         }
 
         private void AddNewProduct(Product product)
@@ -61,6 +37,108 @@ namespace DataPlus.Bar.Entities
             var existingIngredient = _context.Ingredients.FirstOrDefault(i => i.Name == ingredient.Name);
             if (existingIngredient == null)
                 _context.Ingredients.Add(ingredient);
+        }
+
+        private void AddNewClient(Client client)
+        {
+            var existingClient = _context.Clients.FirstOrDefault(c => c.DocumentNumber == client.DocumentNumber);
+            if (existingClient == null)
+                _context.Clients.Add(client);
+        }
+
+        private void AddNewTable(Table table)
+        {
+            var existingTable = _context.Tables.FirstOrDefault(t => t.Number == table.Number);
+            if (existingTable == null)
+                _context.Tables.Add(table);
+        }
+
+        private void AddNewPayment(Payment payment)
+        {
+            var existingPayment = _context.Payments.FirstOrDefault(p => p.Number == payment.Number);
+            if (existingPayment == null)
+                _context.Payments.Add(payment);
+        }
+
+        public void CreatePayments()
+        {
+            //var product1 = _context.Products.First(p => p.Id != Guid.Empty);
+
+            //AddNewPayment(new Payment
+            //{
+            //    Number = 1,
+            //    Date = DateTime.Now,
+            //    PaymentStatus = EPaymentStatus.POR_PAGAR,
+            //    Prefix = "AB",
+
+            //});
+        }
+
+        public void CreateTables()
+        {
+            AddNewTable(new Table
+            {
+                Number = "1",
+                Chairs = 4,
+                Status = ETableStatus.Libre
+            });
+
+            AddNewTable(new Table
+            {
+                Number = "2",
+                Chairs = 4,
+                Status = ETableStatus.Libre
+            });
+
+            AddNewTable(new Table
+            {
+                Number = "3",
+                Chairs = 4,
+                Status = ETableStatus.Libre
+            });
+
+            AddNewTable(new Table
+            {
+                Number = "4",
+                Chairs = 4,
+                Status = ETableStatus.Libre
+            });
+        }
+
+        public void CreateClients()
+        {
+            AddNewClient(new Client
+            {
+                DocumentType = EDocumentType.CC,
+                DocumentNumber = "111111111",
+                FirstName = "Pedro",
+                LastName = "Perez",
+                Email = "pedro@gmail.com",
+                PhoneNumber = "3001234567",
+                Address = "Calle 1 no 1 - 1"
+            });
+
+            AddNewClient(new Client
+            {
+                DocumentType = EDocumentType.CC,
+                DocumentNumber = "2222222",
+                FirstName = "Maria",
+                LastName = "Diaz",
+                Email = "maria@gmail.com",
+                PhoneNumber = "3009876541",
+                Address = "Calle 2 no 2 - 2"
+            });
+
+            AddNewClient(new Client
+            {
+                DocumentType = EDocumentType.CC,
+                DocumentNumber = "333333333",
+                FirstName = "Luis",
+                LastName = "Moreno",
+                Email = "luicito@gmail.com",
+                PhoneNumber = "300515151",
+                Address = "Calle 3 no 3 - 3"
+            });
         }
 
         public void CreateIngredients()
@@ -154,70 +232,6 @@ namespace DataPlus.Bar.Entities
                 Quantity = 160
             });
         }
-
-        public void CreateOwners()
-        {
-            AddnewOwner(new Owner
-            {
-                Name = "Owner 1",
-                Address = "Address 1",
-                DateOfBirth = new DateTime(1980, 1, 1)
-            });
-            AddnewOwner(new Owner
-            {
-                Name = "Owner 5",
-                Address = "Address 5",
-                DateOfBirth = new DateTime(1980, 5, 5)
-            });
-            AddnewOwner(new Owner
-            {
-                Name = "Owner 2",
-                Address = "Address 2",
-                DateOfBirth = new DateTime(1980, 2, 2)
-            });
-            AddnewOwner(new Owner
-            {
-                Name = "Owner 6",
-                Address = "Address 6",
-                DateOfBirth = new DateTime(1980, 6, 6)
-            });
-            AddnewOwner(new Owner
-            {
-                Name = "Owner 4",
-                Address = "Address 4",
-                DateOfBirth = new DateTime(1980, 4, 4)
-            });
-        }
-
-        private void AddnewOwner(Owner owner)
-        {
-            var existingOwner = _context.Owners.FirstOrDefault(o => o.Name == owner.Name);
-            if (existingOwner == null)
-                _context.Owners.Add(owner);
-        }
-
-        public void CreateCubes()
-        {
-            AddNewCube(new Cube
-            {
-                Size = 2,
-            });
-            AddNewCube(new Cube
-            {
-                Size = 3,
-            });
-            AddNewCube(new Cube
-            {
-                Size = 4,
-            });
-        }
-
-        private void AddNewCube(Cube cube)
-        {
-            var existingCube = _context.Cubes.FirstOrDefault(c => c.Size == cube.Size);
-
-            if (existingCube == null)
-                _context.Cubes.Add(cube);
-        }
+        
     }
 }

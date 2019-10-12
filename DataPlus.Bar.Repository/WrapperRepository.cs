@@ -6,27 +6,56 @@ namespace DataPlus.Bar.Repository
     public class WrapperRepository : IWrapperRepository
     {
         private RepositoryContext _repoContext;
-        private ICubeRepository _cube;
-        private IOwnerRepository _owner;
-        private IAccountRepository _account;
         private IProductRepository _product;
         private IIngredientRepository _ingredient;
-
-        public ICubeRepository Cube
+        private IClientRepository _client;
+        private IOrderRepository _order;
+        private IOrderItemRepository _orderItem;
+        private IPaymentRepository _payment;
+        private ITableRepository _table;
+        
+        public IClientRepository Client
         {
             get
             {
-                _cube = _cube == null ? new CubeRepository(_repoContext) : _cube;
-                return _cube;
+                _client = _client == null ? new ClientRepository(_repoContext) : _client;
+                return _client;
             }
         }
 
-        public IOwnerRepository Owner
+        public IOrderRepository Order
         {
             get
             {
-                _owner = _owner == null ? new OwnerRepository(_repoContext) : _owner;
-                return _owner;
+                _order = _order == null ? new OrderRepository(_repoContext) : _order;
+                return _order;
+            }
+        }
+
+        public IOrderItemRepository OrderItem
+        {
+            get
+            {
+                _orderItem = _orderItem == null ? new OrderItemRepository(_repoContext) : _orderItem;
+                return _orderItem;
+            }
+        }
+
+        public IPaymentRepository Payment
+        {
+            get
+            {
+                _payment = _payment == null ? new PaymentRepository(_repoContext) : _payment;
+                return _payment;
+            }
+        }
+
+        public ITableRepository Table
+        {
+            get
+            {
+                _table = _table == null ? new TableRepository(_repoContext) : _table;
+                return _table;
             }
         }
 
@@ -36,15 +65,6 @@ namespace DataPlus.Bar.Repository
             {
                 _product = _product == null ? new ProductRepository(_repoContext) : _product;
                 return _product;
-            }
-        }
-
-        public IAccountRepository Account
-        {
-            get
-            {
-                _account = _account == null ? new AccountRepository(_repoContext) : _account;
-                return _account;
             }
         }
 

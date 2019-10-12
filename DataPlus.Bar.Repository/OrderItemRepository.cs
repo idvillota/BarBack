@@ -4,9 +4,9 @@ using DataPlus.Bar.Entities.Models;
 
 namespace DataPlus.Bar.Repository
 {
-    public class CubeRepository: RepositoryBase<Cube>, ICubeRepository
+    public class OrderItemRepository: RepositoryBase<OrderItem>, IOrderItemRepository
     {
-        public CubeRepository(RepositoryContext repositoryContext)
+        public OrderItemRepository(RepositoryContext repositoryContext)
             :base(repositoryContext)
         {
 

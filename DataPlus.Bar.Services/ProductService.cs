@@ -1,7 +1,6 @@
 ﻿using DataPlus.Bar.Contracts.Logger;
 using DataPlus.Bar.Contracts.Repositories;
 using DataPlus.Bar.Contracts.Services;
-using DataPlus.Bar.Entities.ExtendedModels;
 using DataPlus.Bar.Entities.Models;
 using System;
 using System.Collections.Generic;

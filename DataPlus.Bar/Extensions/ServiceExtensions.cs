@@ -48,8 +48,6 @@ namespace DataPlus.Bar.Extensions
 
         public static void ConfigureDependencies(this IServiceCollection services)
         {
-            services.AddTransient<ICubeService, CubeService>();
-            services.AddTransient<IOwnerService, OwnerService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IIngredientService, IngredientService>();
             services.AddTransient<IWrapperRepository, WrapperRepository>();

@@ -2,7 +2,7 @@
 
 namespace DataPlus.Bar.Contracts.Repositories
 {
-    public interface ICubeRepository: IRepositoryBase<Cube>
+    public interface IOrderRepository: IRepositoryBase<Order>        
     {
     }
 }
