@@ -50,6 +50,8 @@ namespace DataPlus.Bar.Extensions
         {
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IIngredientService, IngredientService>();
+            services.AddTransient<IPaymentService, PaymentService>();
+            services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IWrapperRepository, WrapperRepository>();
         }
     }
