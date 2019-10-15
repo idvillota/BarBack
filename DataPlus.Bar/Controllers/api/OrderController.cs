@@ -6,17 +6,17 @@ using System;
 
 namespace OrderSummation.Controllers.api
 {    
-    [Route("api/order")]
+    [Route("api/payment")]
     [ApiController]
     public class OrderController : ControllerBase
     {
         private ILoggerManager _logger;
-        private IOrderService _orderService;
+        private IOrderService _paymentService;
 
-        public OrderController(ILoggerManager logger, IOrderService orderService)
+        public OrderController(ILoggerManager logger, IOrderService paymentService)
         {
             _logger = logger;
-            _orderService = orderService;
+            _paymentService = paymentService;
         }
 
         // GET: api/Order
@@ -25,9 +25,9 @@ namespace OrderSummation.Controllers.api
         {
             try
             {
-                var orders = _orderService.GetAll();
-                _logger.LogInfo("Returned all orders from database");
-                return Ok(orders);
+                var payments = _paymentService.GetAll();
+                _logger.LogInfo("Returned all payments from database");
+                return Ok(payments);
             }
             catch (Exception ex)
             {
@@ -42,10 +42,10 @@ namespace OrderSummation.Controllers.api
         {
             try
             {
-                var order = _orderService.GetById(id);
-                //var order = _orderService.GetByIdWithDetails(id);
-                _logger.LogInfo($"Returned order with id:{id}");
-                return Ok(order);
+                var payment = _paymentService.GetById(id);
+                //var payment = _paymentService.GetByIdWithDetails(id);
+                _logger.LogInfo($"Returned payment with id:{id}");
+                return Ok(payment);
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace OrderSummation.Controllers.api
 
         // POST: api/Order
         [HttpPost]
-        public IActionResult Post(Order order)
+        public IActionResult Post(Order payment)
         {
             try
             {
@@ -66,8 +66,8 @@ namespace OrderSummation.Controllers.api
                     _logger.LogError($"OrderController::Post::ModelStateInvalid");
                     return BadRequest(ModelState);
                 }
-                _orderService.Create(order);
-                return Ok(order);
+                _paymentService.Create(payment);
+                return Ok(payment);
             }
             catch (Exception ex)
             {
@@ -78,7 +78,7 @@ namespace OrderSummation.Controllers.api
 
         // PUT: api/Order/5
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, Order order)
+        public IActionResult Put(Guid id, Order payment)
         {
             try
             {
@@ -87,8 +87,8 @@ namespace OrderSummation.Controllers.api
                     _logger.LogError($"OrderController::Put::ModelStateInvalid");
                     return BadRequest(ModelState);
                 }
-                _orderService.Update(order);
-                return Ok(order);
+                _paymentService.Update(payment);
+                return Ok(payment);
             }
             catch (Exception ex)
             {
@@ -101,22 +101,24 @@ namespace OrderSummation.Controllers.api
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            try
-            {
-                var order = _orderService.GetById(id);
-                if (order.Id == Guid.Empty)
-                {
-                    _logger.LogError($"OrderController::Delete::Order with id {id} not found");
-                    return NotFound();
-                }
-                _orderService.Delete(order);
-                return Ok(order);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"OrderController::Delete::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            //try
+            //{
+            //    var payment = _paymentService.GetById(id);
+            //    if (payment.Id == Guid.Empty)
+            //    {
+            //        _logger.LogError($"OrderController::Delete::Order with id {id} not found");
+            //        return NotFound();
+            //    }
+            //    _paymentService.Delete(payment);
+            //    return Ok(payment);
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError($"OrderController::Delete::{ex.Message}");
+            //    return StatusCode(500, "Internal Server Error");
+            //}
+
+            return null;
         }
     }
 }
