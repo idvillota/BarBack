@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace ProductSummation.Controllers.api
-{    
+{
     [Route("api/product")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -23,100 +23,69 @@ namespace ProductSummation.Controllers.api
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-            try
-            {
-                var products = _productService.GetAll();
-                _logger.LogInfo("Returned all products from database");
-                return Ok(products);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ProductController::Get::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _logger.LogInfo("Fetching all products from database");
+            var products = _productService.GetAll();
+            _logger.LogInfo($"Returning {products.Count} products.");
+            return Ok(products);
         }
 
         // GET: api/Product/5
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            try
-            {
-                var product = _productService.GetById(id);
-                //var product = _productService.GetByIdWithDetails(id);
-                _logger.LogInfo($"Returned product with id:{id}");
-                return Ok(product);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ProductController::GetById::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-
+            _logger.LogInfo($"Filtering product with id{id}");
+            var product = _productService.GetById(id);
+            _logger.LogInfo($"Returned product with id:{id}");
+            return Ok(product);
         }
 
         // POST: api/Product
         [HttpPost]
         public IActionResult Post(Product product)
         {
-            try
+            _logger.LogInfo("Creating product");
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"ProductController::Post::ModelStateInvalid");
-                    return BadRequest(ModelState);
-                }
-                _productService.Create(product);
-                return Ok(product);
+                _logger.LogError($"ProductController::Post::ModelStateInvalid");
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ProductController::Post::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _productService.Create(product);
+            _logger.LogInfo($"Created product with id:{product.Id}");
+            return Ok(product);
+
         }
 
         // PUT: api/Product/5
         [HttpPut("{id}")]
         public IActionResult Put(Guid id, Product product)
         {
-            try
+            _logger.LogInfo($"Editing product with id {product.Id}");
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"ProductController::Put::ModelStateInvalid");
-                    return BadRequest(ModelState);
-                }
-                _productService.Update(product);
-                return Ok(product);
+                _logger.LogError($"ProductController::Put::ModelStateInvalid");
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ProductController::Put::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _productService.Update(product);
+            _logger.LogInfo($"Editing product with id:{product.Id}");
+            return Ok(product);
+
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            try
+            _logger.LogInfo($"Deleting product with id {id}");
+            var product = _productService.GetById(id);
+            if (product.Id == Guid.Empty)
             {
-                var product = _productService.GetById(id);
-                if (product.Id == Guid.Empty)
-                {
-                    _logger.LogError($"ProductController::Delete::Product with id {id} not found");
-                    return NotFound();
-                }
-                _productService.Delete(product);
-                return Ok(product);
+                _logger.LogError($"ProductController::Delete::Product with id {id} not found");
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ProductController::Delete::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _productService.Delete(product);
+            _logger.LogInfo($"Delete product with id: {id}");
+            return Ok(product);
+
         }
     }
 }

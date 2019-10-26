@@ -9,7 +9,7 @@ namespace DataPlus.Bar.Entities.Models
     {
         #region Properties
 
-        public int ID { get; set; }
+        public int Id { get; set; }
         
         public List<OrderItem> OrderItems { get; set; }
         

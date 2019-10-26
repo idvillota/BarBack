@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace IngredientSummation.Controllers.api
-{    
+{
     [Route("api/ingredient")]
     [ApiController]
     public class IngredientController : ControllerBase
@@ -23,100 +23,67 @@ namespace IngredientSummation.Controllers.api
         [HttpGet]
         public IActionResult GetAllIngredients()
         {
-            try
-            {
-                var ingredients = _ingredientService.GetAll();
-                _logger.LogInfo("Returned all ingredients from database");
-                return Ok(ingredients);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"IngredientController::Get::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _logger.LogInfo("Fetching all ingredients from database");
+            var ingredients = _ingredientService.GetAll();
+            _logger.LogInfo($"Returning {ingredients.Count} ingredients.");
+            return Ok(ingredients);
         }
 
         // GET: api/Ingredient/5
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            try
-            {
-                var ingredient = _ingredientService.GetById(id);
-                //var ingredient = _ingredientService.GetByIdWithDetails(id);
-                _logger.LogInfo($"Returned ingredient with id:{id}");
-                return Ok(ingredient);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"IngredientController::GetById::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-
+            _logger.LogInfo($"Filtering ingredient with id{id}");
+            var ingredient = _ingredientService.GetById(id);
+            _logger.LogInfo($"Returned ingredient with id:{id}");
+            return Ok(ingredient);
         }
 
         // POST: api/Ingredient
         [HttpPost]
         public IActionResult Post(Ingredient ingredient)
         {
-            try
+            _logger.LogInfo("Creating ingredient");
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"IngredientController::Post::ModelStateInvalid");
-                    return BadRequest(ModelState);
-                }
-                _ingredientService.Create(ingredient);
-                return Ok(ingredient);
+                _logger.LogError($"IngredientController::Post::ModelStateInvalid");
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"IngredientController::Post::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _ingredientService.Create(ingredient);
+            _logger.LogInfo($"Created ingredient with id:{ingredient.Id}");
+            return Ok(ingredient);
         }
 
         // PUT: api/Ingredient/5
         [HttpPut("{id}")]
         public IActionResult Put(Guid id, Ingredient ingredient)
         {
-            try
+            _logger.LogInfo($"Editing ingredient with id {ingredient.Id}");
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"IngredientController::Put::ModelStateInvalid");
-                    return BadRequest(ModelState);
-                }
-                _ingredientService.Update(ingredient);
-                return Ok(ingredient);
+                _logger.LogError($"IngredientController::Put::ModelStateInvalid");
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"IngredientController::Put::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _ingredientService.Update(ingredient);
+            _logger.LogInfo($"Editing ingredient with id:{ingredient.Id}");
+            return Ok(ingredient);
+
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            try
+            _logger.LogInfo($"Deleting ingredient with id {id}");
+            var ingredient = _ingredientService.GetById(id);
+            if (ingredient.Id == Guid.Empty)
             {
-                var ingredient = _ingredientService.GetById(id);
-                if (ingredient.Id == Guid.Empty)
-                {
-                    _logger.LogError($"IngredientController::Delete::Ingredient with id {id} not found");
-                    return NotFound();
-                }
-                _ingredientService.Delete(ingredient);
-                return Ok(ingredient);
+                _logger.LogError($"IngredientController::Delete::Ingredient with id {id} not found");
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"IngredientController::Delete::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _ingredientService.Delete(ingredient);
+            _logger.LogInfo($"Delete ingredient with id: {id}");
+            return Ok(ingredient);
         }
     }
 }

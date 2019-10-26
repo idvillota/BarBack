@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace ClientSummation.Controllers.api
-{    
+{
     [Route("api/client")]
     [ApiController]
     public class ClientController : ControllerBase
@@ -23,100 +23,66 @@ namespace ClientSummation.Controllers.api
         [HttpGet]
         public IActionResult GetAllClients()
         {
-            try
-            {
-                var clients = _clientService.GetAll();
-                _logger.LogInfo("Returned all clients from database");
-                return Ok(clients);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ClientController::Get::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _logger.LogInfo("Fetching all clients from database");
+            var clients = _clientService.GetAll();
+            _logger.LogInfo($"Returning {clients.Count} clients.");
+            return Ok(clients);
         }
 
         // GET: api/Client/5
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            try
-            {
-                var client = _clientService.GetById(id);
-                //var client = _clientService.GetByIdWithDetails(id);
-                _logger.LogInfo($"Returned client with id:{id}");
-                return Ok(client);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ClientController::GetById::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-
+            _logger.LogInfo($"Filtering client with id{id}");
+            var client = _clientService.GetById(id);
+            _logger.LogInfo($"Returned client with id:{id}");
+            return Ok(client);
         }
 
         // POST: api/Client
         [HttpPost]
         public IActionResult Post(Client client)
         {
-            try
+            _logger.LogInfo("Creating client");
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"ClientController::Post::ModelStateInvalid");
-                    return BadRequest(ModelState);
-                }
-                _clientService.Create(client);
-                return Ok(client);
+                _logger.LogError($"ClientController::Post::ModelStateInvalid");
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ClientController::Post::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _clientService.Create(client);
+            _logger.LogInfo($"Created client with id:{client.Id}");
+            return Ok(client);
         }
 
         // PUT: api/Client/5
         [HttpPut("{id}")]
         public IActionResult Put(Guid id, Client client)
         {
-            try
+            _logger.LogInfo($"Editing client with id {client.Id}");
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"ClientController::Put::ModelStateInvalid");
-                    return BadRequest(ModelState);
-                }
-                _clientService.Update(client);
-                return Ok(client);
+                _logger.LogError($"ClientController::Put::ModelStateInvalid");
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ClientController::Put::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _clientService.Update(client);
+            _logger.LogInfo($"Editing client with id:{client.Id}");
+            return Ok(client);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            try
+            _logger.LogInfo($"Deleting client with id {id}");
+            var client = _clientService.GetById(id);
+            if (client.Id == Guid.Empty)
             {
-                var client = _clientService.GetById(id);
-                if (client.Id == Guid.Empty)
-                {
-                    _logger.LogError($"ClientController::Delete::Client with id {id} not found");
-                    return NotFound();
-                }
-                _clientService.Delete(client);
-                return Ok(client);
+                _logger.LogError($"ClientController::Delete::Client with id {id} not found");
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"ClientController::Delete::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _clientService.Delete(client);
+            _logger.LogInfo($"Delete client with id: {client.Id}");
+            return Ok(client);
         }
     }
 }

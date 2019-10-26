@@ -5,96 +5,69 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace OrderSummation.Controllers.api
-{    
-    [Route("api/payment")]
+{
+    [Route("api/order")]
     [ApiController]
     public class OrderController : ControllerBase
     {
         private ILoggerManager _logger;
-        private IOrderService _paymentService;
+        private IOrderService _orderService;
 
-        public OrderController(ILoggerManager logger, IOrderService paymentService)
+        public OrderController(ILoggerManager logger, IOrderService orderService)
         {
             _logger = logger;
-            _paymentService = paymentService;
+            _orderService = orderService;
         }
 
         // GET: api/Order
         [HttpGet]
         public IActionResult GetAllOrders()
         {
-            try
-            {
-                var payments = _paymentService.GetAll();
-                _logger.LogInfo("Returned all payments from database");
-                return Ok(payments);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"OrderController::Get::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _logger.LogInfo("Fetching all orders from database");
+            var orders = _orderService.GetAll();
+            _logger.LogInfo($"Returning {orders.Count} orders.");
+            return Ok(orders);
         }
 
         // GET: api/Order/5
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
         {
-            try
-            {
-                var payment = _paymentService.GetById(id);
-                //var payment = _paymentService.GetByIdWithDetails(id);
-                _logger.LogInfo($"Returned payment with id:{id}");
-                return Ok(payment);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"OrderController::GetById::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-
+            _logger.LogInfo($"Filtering order with id{id}");
+            var order = _orderService.GetById(id);
+            _logger.LogInfo($"Returned order with id:{id}");
+            return Ok(order);
         }
 
         // POST: api/Order
         [HttpPost]
-        public IActionResult Post(Order payment)
+        public IActionResult Post(Order order)
         {
-            try
+            _logger.LogInfo("Creating order");
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"OrderController::Post::ModelStateInvalid");
-                    return BadRequest(ModelState);
-                }
-                _paymentService.Create(payment);
-                return Ok(payment);
+                _logger.LogError($"OrderController::Post::ModelStateInvalid");
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"OrderController::Post::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _orderService.Create(order);
+            _logger.LogInfo($"Created client with id:{order.Id}");
+            return Ok(order);
+
         }
 
         // PUT: api/Order/5
         [HttpPut("{id}")]
-        public IActionResult Put(Guid id, Order payment)
+        public IActionResult Put(Guid id, Order order)
         {
-            try
+            _logger.LogInfo($"Editing order with id {order.Id}");
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    _logger.LogError($"OrderController::Put::ModelStateInvalid");
-                    return BadRequest(ModelState);
-                }
-                _paymentService.Update(payment);
-                return Ok(payment);
+                _logger.LogError($"OrderController::Put::ModelStateInvalid");
+                return BadRequest(ModelState);
             }
-            catch (Exception ex)
-            {
-                _logger.LogError($"OrderController::Put::{ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
+            _orderService.Update(order);
+            _logger.LogInfo($"Editing order with id:{order.Id}");
+            return Ok(order);
         }
 
         // DELETE: api/ApiWithActions/5
@@ -103,14 +76,14 @@ namespace OrderSummation.Controllers.api
         {
             //try
             //{
-            //    var payment = _paymentService.GetById(id);
-            //    if (payment.Id == Guid.Empty)
+            //    var order = _orderService.GetById(id);
+            //    if (order.Id == Guid.Empty)
             //    {
             //        _logger.LogError($"OrderController::Delete::Order with id {id} not found");
             //        return NotFound();
             //    }
-            //    _paymentService.Delete(payment);
-            //    return Ok(payment);
+            //    _orderService.Delete(order);
+            //    return Ok(order);
             //}
             //catch (Exception ex)
             //{

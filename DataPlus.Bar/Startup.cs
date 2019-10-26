@@ -31,6 +31,7 @@ namespace DataPlus.Bar2
             services.ConfigureDependencies();
             services.ConfigureSQLContext(Configuration);
             services.ConfigureRepositoryWrapper();
+            services.ConfigureSwagger();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -53,6 +54,9 @@ namespace DataPlus.Bar2
                 app.UseExceptionHandler("/Error");
             }
 
+            //app.ConfigureExceptionHandler(logger);
+            app.ConfigureExceptionHandler();
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -63,6 +67,12 @@ namespace DataPlus.Bar2
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "post API V1");
             });
 
             //app.UseSpa(spa =>
